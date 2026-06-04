@@ -1,0 +1,23 @@
+name: Deploy Website
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+      runs-on: ubuntu-latest
+
+       steps:
+         - name: Checkout code
+           uses: actions/checkout@v3
+
+         - name: Build Docker image
+           run: docker bild -t mywebsite .
+
+         - name: Run container
+           run: docker run -d -p 8080:80  --name mywebsite mywedsite
+
+         - name: Ckack container eunning
+           run: docker ps
