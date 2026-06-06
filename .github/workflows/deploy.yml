@@ -16,8 +16,16 @@ jobs:
       - name: Build Docker image
         run: docker build -t mywebsite .
 
-      - name: Run container
-        run: docker run -d -p 8080:80 --name mywebsite mywebsite
-
-      - name: Check container running
-        run: docker ps
+      - name: Deploy to server
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.SERVER_IP }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            cd ~/project-1/Wine_HTML
+            git pull origin main
+            docker stop mywebsite || true
+            docker rm mywebsite || true
+            docker build -t mywebsite .
+            docker run -d -p 8080:80 --name mywebsite mywebsite
