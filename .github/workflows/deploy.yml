@@ -1,3 +1,4 @@
+cat > ~/project-1/Wine_HTML/.github/workflows/deploy.yml << 'EOF'
 name: Deploy Website
 
 on:
@@ -7,17 +8,18 @@ on:
 
 jobs:
   build-and-deploy:
-      runs-on: ubuntu-latest
+    runs-on: ubuntu-latest
 
-       steps:
-         - name: Checkout code
-           uses: actions/checkout@v3
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-         - name: Build Docker image
-           run: docker build -t mywebsite .
+      - name: Build Docker image
+        run: docker build -t mywebsite .
 
-         - name: Run container
-           run: docker run -d -p 8080:80  --name mywebsite mywebsite
+      - name: Run container
+        run: docker run -d -p 8080:80 --name mywebsite mywebsite
 
-         - name: Ckack container eunning
-           run: docker ps
+      - name: Check container running
+        run: docker ps
+EOF
